@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +97,54 @@ namespace CarlZeissProject
 
             }
             updateProcessButton();
+        }
+
+        private void processButton_Click(object sender, RoutedEventArgs e)
+        {
+            process(inputTextBox.Text, outputTextBox.Text);
+        }
+
+        private void process(string input, string output)
+        {
+           if(File.Exists(input) == false)
+           {
+                throw new Exception("File not found");
+           }
+
+           var lines = File.ReadAllLines(input);
+           //the pythonic way of doing it, not creating a blob
+           List<Dictionary<string, string>> processedLines = new List<Dictionary<string, string>>();
+           foreach (var line in lines)
+           {
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                string[] entries = line.Split(",");
+
+                if(entries.Length < 7 ) {
+                    throw new Exception("File contains invalid entries");
+                }
+
+                dict.Add("TYP", entries[0]);
+                dict.Add("NAME", entries[1]);
+                dict.Add("X", entries[2]);
+                dict.Add("Y", entries[3]);
+                dict.Add("Z", entries[4]);
+                dict.Add("I", entries[5]);
+                dict.Add("J", entries[6]);
+                dict.Add("K", entries[7]);
+
+                if(entries.Length >= 8)
+                {
+                    dict.Add("RAD", entries[8]);
+                } else
+                {
+                    dict.Add("RAD", "Unspecified");
+                }
+
+                processedLines.Add(dict);
+            }
+
+           //TODO: PRINT IT OUT
+
         }
     }
 }
