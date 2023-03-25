@@ -1,0 +1,17 @@
+﻿<Window x:Class="CarlZeissProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarlZeissProject"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="261" Width="362">
+    <Grid>
+        <TextBox Width="200" Height="20" Text="Choose a input file" Margin="10,21,110,169" TextChanged="TextBox_TextChanged" Name="inputTextBox"></TextBox>
+        <TextBox Width="200" Height="20" Text="Choose a output file" Margin="10,61,110,129" TextChanged="TextBox_TextChanged" Name="outputTextBox"></TextBox>
+        <Button Height="20" Margin="215,21,30,169" Click="Button_Click_InputFile">Wählen</Button>
+        <Button Height="20" Margin="215,61,30,129" Click="Button_Click_OutputFile">Wählen</Button>
+        <Button Width="100" Height="20" Margin="10,170,210,20" IsEnabled="False" Name="processButton">Verarbeiten</Button>
+
+    </Grid>
+</Window>
