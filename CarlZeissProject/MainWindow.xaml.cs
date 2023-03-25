@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +97,21 @@ namespace CarlZeissProject
 
             }
             updateProcessButton();
+        }
+
+        private void processButton_Click(object sender, RoutedEventArgs e)
+        {
+            process(inputTextBox.Text, outputTextBox.Text);
+        }
+
+        private void process(string input, string output)
+        {
+           if(File.Exists(input) == false)
+           {
+                return;
+           }
+
+
         }
     }
 }
