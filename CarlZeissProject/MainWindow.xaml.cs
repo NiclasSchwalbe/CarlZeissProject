@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -101,49 +102,94 @@ namespace CarlZeissProject
 
         private void processButton_Click(object sender, RoutedEventArgs e)
         {
-            process(inputTextBox.Text, outputTextBox.Text);
+            try
+            {
+                process(inputTextBox.Text, outputTextBox.Text);
+                resultBox.Text = "Erfolg!";
+            }
+            catch (Exception ex)
+            {
+                resultBox.Text = ex.Message;
+            }
         }
 
-        private void process(string input, string output)
+        private void process(string inputFile, string outputFile)
         {
-           if(File.Exists(input) == false)
+           if(File.Exists(inputFile) == false)
            {
-                throw new Exception("File not found");
+                throw new Exception("File not found.");
            }
 
-           var lines = File.ReadAllLines(input);
+           var lines = File.ReadAllLines(inputFile);
            //the pythonic way of doing it, not creating a blob
            List<Dictionary<string, string>> processedLines = new List<Dictionary<string, string>>();
            foreach (var line in lines)
            {
                 Dictionary<string, string> dict = new Dictionary<string, string>();
-                string[] entries = line.Split(",");
+                string[] entries = line.Split(";");
 
                 if(entries.Length < 7 ) {
                     throw new Exception("File contains invalid entries");
                 }
 
-                dict.Add("TYP", entries[0]);
-                dict.Add("NAME", entries[1]);
-                dict.Add("X", entries[2]);
-                dict.Add("Y", entries[3]);
-                dict.Add("Z", entries[4]);
-                dict.Add("I", entries[5]);
-                dict.Add("J", entries[6]);
-                dict.Add("K", entries[7]);
+                dict.Add("TYP",     entries[0]);
+                dict.Add("X",       entries[1]);
+                dict.Add("Y",       entries[2]);
+                dict.Add("Z",       entries[3]);
+                dict.Add("I",       entries[4]);
+                dict.Add("J",       entries[5]);
+                dict.Add("K",       entries[6]);
 
-                if(entries.Length >= 8)
+                if(entries.Length > 7)
                 {
-                    dict.Add("RAD", entries[8]);
-                } else
-                {
-                    dict.Add("RAD", "Unspecified");
-                }
+                    dict.Add("RAD", entries[7]);
+                } 
 
                 processedLines.Add(dict);
             }
 
-           //TODO: PRINT IT OUT
+            //TODO: PRINT IT OUT
+
+            //print Header
+            StringBuilder builder = new StringBuilder();
+            builder.Append( "MAP: Unknown\n" +
+                            "MODEL: \n" +
+                            "USER: Test   NAME: Caligo   DATE: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "\n");
+            builder.Append("-\n-\n-\n-\n-\n-\n-\n"); //empty header lines
+
+            Dictionary<string, int> countTypes = new Dictionary<string, int>();
+            countTypes.Add("CIR", 0);
+            countTypes.Add("PLN", 0);
+
+            foreach(var dict in processedLines)
+            {
+                var typ = dict["TYP"];
+                builder.Append(typ+";");
+                builder.Append(typ + "_" + (countTypes[typ]++) + ";");
+                builder.Append(dict["X"] + ";" + dict["Y"] + ";" + dict["Z"]+";");
+                builder.Append(dict["I"] + ";" + dict["J"] + ";" + dict["K"] + ";");
+                builder.Append(";;;;;;;;;;;");
+
+                if (dict.ContainsKey("RAD"))
+                {
+                    builder.Append(dict["RAD"] + ";");
+                } else
+                {
+                    builder.Append(';');
+                }
+                builder.Append(";;;;;;\n");
+
+            }
+
+            builder.Replace(",", ".");
+            builder.Replace(";", ",");
+
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
+
+            File.WriteAllText(outputFile, builder.ToString());
 
         }
     }

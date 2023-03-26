@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarlZeissProject"
         mc:Ignorable="d"
-        Title="MainWindow" Height="261" Width="362">
+        Title="MainWindow" Height="279" Width="376" ResizeMode="NoResize">
     <Grid>
         <TextBox Width="200" Height="20" Text="Choose a input file" Margin="10,21,110,169" TextChanged="TextBox_TextChanged" Name="inputTextBox"></TextBox>
         <TextBox Width="200" Height="20" Text="Choose a output file" Margin="10,61,110,129" TextChanged="TextBox_TextChanged" Name="outputTextBox"></TextBox>
         <Button Height="20" Margin="215,21,30,169" Click="Button_Click_InputFile">Wählen</Button>
         <Button Height="20" Margin="215,61,30,129" Click="Button_Click_OutputFile">Wählen</Button>
         <Button Width="100" Height="20" Margin="10,170,210,20" IsEnabled="False" Name="processButton" Click="processButton_Click">Verarbeiten</Button>
+        <TextBox Width="200" Height="20" Text="" Margin="142,188,20,37" TextChanged="TextBox_TextChanged" Name="resultBox" BorderThickness="0"></TextBox>
+
 
     </Grid>
 </Window>
