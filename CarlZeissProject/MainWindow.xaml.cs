@@ -148,8 +148,6 @@ namespace CarlZeissProject
                 processedLines.Add(dict);
             }
 
-            //TODO: PRINT IT OUT
-
             //print Header
             StringBuilder builder = new StringBuilder();
             builder.Append( "MAP: Unknown\n" +
